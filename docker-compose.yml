@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  forensic-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: forensic-case-manager
+    restart: unless-stopped
+    ports:
+      - "6000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      # Persist the dossier metadata database JSON file
+      - ./dossiers.json:/app/dossiers.json
+      
+      # Persist and allow easy host-side uploading of custom Word template files (.docx)
+      - ./templates:/app/templates
+      
+      # Persist the dynamic directories and completed Word assessment reports to the host HDD (sda1 mounted at /mnt/storage)
+      - /mnt/storage:/app/records

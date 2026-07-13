@@ -1,0 +1,6 @@
+{
+  "name": "Quản lý hồ sơ giám định",
+  "description": "Phần mềm quản lý hồ sơ giám định nghiệp vụ (Đường vân, Tài liệu, Súng - đạn), tự động tạo thư mục và thay thế thông tin trong 8 file biểu mẫu Word tương ứng theo chức danh lãnh đạo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
