@@ -13,8 +13,8 @@ services:
       - NODE_ENV=production
       - PORT=3000
     volumes:
-      # Persist the dossier metadata database JSON file
-      - ./dossiers.json:/app/dossiers.json
+      # Persist the dossier metadata database JSON file inside a directory
+      - ./data:/app/data
       
       # Persist and allow easy host-side uploading of custom Word template files (.docx)
       - ./templates:/app/templates

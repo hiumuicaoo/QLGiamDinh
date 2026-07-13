@@ -14,7 +14,8 @@ const TEMPLATES_DIR = path.join(process.cwd(), "templates");
 const TRUONG_PHONG_DIR = path.join(TEMPLATES_DIR, "TRUONG_PHONG");
 const PHO_TRUONG_PHONG_DIR = path.join(TEMPLATES_DIR, "PHO_TRUONG_PHONG");
 const RECORDS_DIR = path.join(process.cwd(), "records");
-const DATA_FILE = path.join(process.cwd(), "dossiers.json");
+const DATA_DIR = path.join(process.cwd(), "data");
+const DATA_FILE = path.join(DATA_DIR, "dossiers.json");
 
 // Core database structure
 interface Examiner {
@@ -64,6 +65,7 @@ function ensureDirsExist() {
   if (!fs.existsSync(TRUONG_PHONG_DIR)) fs.mkdirSync(TRUONG_PHONG_DIR, { recursive: true });
   if (!fs.existsSync(PHO_TRUONG_PHONG_DIR)) fs.mkdirSync(PHO_TRUONG_PHONG_DIR, { recursive: true });
   if (!fs.existsSync(RECORDS_DIR)) fs.mkdirSync(RECORDS_DIR, { recursive: true });
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   
   // Create folders for fields inside records
   ["DUONGVAN", "TAILIEU", "SUNGDAN"].forEach((field) => {

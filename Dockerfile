@@ -44,8 +44,7 @@ COPY --from=builder /app/dist ./dist
 
 # Create necessary directories for local dynamic Word template and data storage,
 # then assign ownership to the pre-existing non-root 'node' user for security hardening
-RUN mkdir -p /app/records /app/templates /app/templates/TRUONG_PHONG /app/templates/PHO_TRUONG_PHONG && \
-    touch /app/dossiers.json && \
+RUN mkdir -p /app/records /app/templates /app/templates/TRUONG_PHONG /app/templates/PHO_TRUONG_PHONG /app/data && \
     chown -R node:node /app
 
 # Switch to the non-root user
