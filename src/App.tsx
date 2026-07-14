@@ -1167,7 +1167,7 @@ export default function App() {
                                         { name: "5_B1-QUYET DINH KET THUC HO SO.docx", desc: "Quyết định kết thúc HS" },
                                         { name: "6_B15-BAN DINH THOI HAN BAO QUAN HO SO.docx", desc: "Bản định thời hạn bảo quản" },
                                         { name: "7_PHIEU CHAM DIEM.docx", desc: "Phiếu chấm điểm" },
-                                        { name: "8_B11-THONG BAO THONG TIN VE HO SO GDTP.doc", desc: "Thông báo thông tin HS" }
+                                        { name: "X_B11-THONG BAO THONG TIN VE HO SO GDTP.docx", desc: "Thông báo thông tin HS" }
                                       ].map((fileObj) => (
                                         <a
                                           key={fileObj.name}

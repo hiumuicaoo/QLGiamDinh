@@ -315,11 +315,10 @@ async function initDefaultTemplates() {
       ]
     );
 
-    // File 8: B11-THONG BAO THONG TIN VE HO SO GDTP.doc
-    // Note: Copied as .doc extension but uses valid docx content internally
+    // File 8: X_B11-THONG BAO THONG TIN VE HO SO GDTP.docx
     await createTemplateFile(
       dir,
-      "8_B11-THONG BAO THONG TIN VE HO SO GDTP.doc",
+      "X_B11-THONG BAO THONG TIN VE HO SO GDTP.docx",
       "Thông báo thông tin về hồ sơ giám định tư pháp",
       "Số đăng ký: [Số đăng ký]",
       [
@@ -470,7 +469,7 @@ app.post("/api/dossiers", async (req, res) => {
       "5_B1-QUYET DINH KET THUC HO SO.docx",
       "6_B15-BAN DINH THOI HAN BAO QUAN HO SO.docx",
       "7_PHIEU CHAM DIEM.docx",
-      "8_B11-THONG BAO THONG TIN VE HO SO GDTP.doc",
+      "X_B11-THONG BAO THONG TIN VE HO SO GDTP.docx",
     ];
 
     // Compilation of replace data
