@@ -529,13 +529,54 @@ app.post("/api/dossiers", async (req, res) => {
       const content = fs.readFileSync(srcFilePath);
       const zip = new PizZip(content);
       
+      // Auto-remove empty rows for 1 GĐV / 1 Trợ lý inside File 4 template XML before rendering
+      if (fileName === "4_QUYET DINH PHAN CONG.docx") {
+        try {
+          const docXmlFile = zip.file("word/document.xml");
+          if (docXmlFile) {
+            let xmlContent = docXmlFile.asText();
+            
+            const numExaminers = data.examiners ? data.examiners.length : 0;
+            const numAssistants = data.assistants ? data.assistants.length : 0;
+            
+            const removeParagraphContaining = (xml: string, targetText: string) => {
+              const pRegex = /<w:p(?:\s+[^>]*)*?>[\s\S]*?<\/w:p>/g;
+              return xml.replace(pRegex, (match) => {
+                const plainText = match.replace(/<[^>]+>/g, "");
+                if (plainText.includes(targetText)) {
+                  return "";
+                }
+                return match;
+              });
+            };
+
+            if (numExaminers < 2) {
+              xmlContent = removeParagraphContaining(xmlContent, "GĐV 2");
+            }
+            if (numAssistants < 2) {
+              xmlContent = removeParagraphContaining(xmlContent, "Trợ lý 2");
+            }
+
+            zip.file("word/document.xml", xmlContent);
+          }
+        } catch (xmlErr) {
+          console.error("Error pre-processing XML for file 4:", xmlErr);
+        }
+      }
+
       const doc = new Docxtemplater(zip, {
         delimiters: { start: "[", end: "]" },
         paragraphLoop: true,
         linebreaks: true,
       });
 
-      doc.render(tags);
+      // Override "Vụ số" for file 4 to only include the number, without the /GT-YY suffix
+      const fileTags = { ...tags };
+      if (fileName === "4_QUYET DINH PHAN CONG.docx") {
+        fileTags["Vụ số"] = String(data.caseNoX);
+      }
+
+      doc.render(fileTags);
 
       const outBuffer = doc.getZip().generate({
         type: "nodebuffer",
