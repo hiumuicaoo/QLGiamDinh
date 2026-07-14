@@ -18,7 +18,8 @@ import {
   TrendingUp, 
   Check, 
   AlertCircle,
-  FileSpreadsheet
+  FileSpreadsheet,
+  FolderDown
 } from "lucide-react";
 import { Dossier, Examiner } from "./types";
 
@@ -1130,16 +1131,26 @@ export default function App() {
                                 </button>
                               </td>
 
-                              {/* Delete button */}
+                              {/* Actions (Download ZIP & Delete) */}
                               <td className="px-4 py-4 text-right" onClick={(e) => e.stopPropagation()}>
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteDossier(dossier.id)}
-                                  className="p-1.5 text-gray-500 hover:text-red-400 rounded-lg hover:bg-white/5 transition-all cursor-pointer"
-                                  title="Xóa hồ sơ"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
+                                <div className="flex items-center justify-end gap-1">
+                                  <a
+                                    href={`/api/download-zip?id=${dossier.id}`}
+                                    className="p-1.5 text-emerald-400 hover:text-[#121214] hover:bg-emerald-500 rounded-lg transition-all cursor-pointer inline-flex items-center"
+                                    title="Tải về bộ hồ sơ (.zip)"
+                                    download
+                                  >
+                                    <FolderDown className="w-4 h-4" />
+                                  </a>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteDossier(dossier.id)}
+                                    className="p-1.5 text-gray-500 hover:text-red-400 rounded-lg hover:bg-white/5 transition-all cursor-pointer"
+                                    title="Xóa hồ sơ"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
                               </td>
                             </tr>
 
@@ -1148,13 +1159,24 @@ export default function App() {
                               <tr className="bg-[#1A1A1C]/25">
                                 <td colSpan={9} className="px-6 py-4 border-t border-b border-white/10">
                                   <div className="space-y-4">
-                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-2 border-b border-white/5">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-3 border-b border-white/5">
                                       <div>
                                         <p className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">📂 8 BIỂU MẪU ĐÃ SINH TỰ ĐỘNG CHO VỤ SỐ: {dossier.caseNo}</p>
                                         <p className="text-[11px] text-gray-500 mt-0.5">Click vào biểu tượng để tải trực tiếp file .docx/.doc đã điền đủ thông tin</p>
                                       </div>
-                                      <div className="text-xs text-gray-400 font-mono">
-                                        Thư mục lưu trữ trên Server: <code className="bg-[#1A1A1C] px-2 py-1 rounded border border-white/10 text-emerald-400 font-bold">records/{dossier.field}/{dossier.caseNo.replace(/\//g, "-")}</code>
+                                      <div className="flex flex-wrap items-center gap-3">
+                                        <a
+                                          href={`/api/download-zip?id=${dossier.id}`}
+                                          className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-[#121214] font-bold rounded-lg text-xs transition-all cursor-pointer shadow-md shadow-emerald-500/10 hover:shadow-emerald-500/20"
+                                          title="Tải về toàn bộ 8 biểu mẫu (.zip)"
+                                          download
+                                        >
+                                          <FolderDown className="w-3.5 h-3.5" />
+                                          Tải về bộ hồ sơ (.zip)
+                                        </a>
+                                        <div className="text-xs text-gray-400 font-mono">
+                                          Thư mục lưu trữ trên Server: <code className="bg-[#1A1A1C] px-2 py-1 rounded border border-white/10 text-emerald-400 font-bold">records/{dossier.field}/{dossier.caseNo.replace(/\//g, "-")}</code>
+                                        </div>
                                       </div>
                                     </div>
 

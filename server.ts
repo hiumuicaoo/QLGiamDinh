@@ -666,6 +666,64 @@ app.get("/api/download", (req, res) => {
   res.download(filePath, String(filename));
 });
 
+// API: Download all generated files as a ZIP package
+app.get("/api/download-zip", (req, res) => {
+  const { id } = req.query;
+  if (!id) {
+    return res.status(400).json({ error: "Thiếu thông số id" });
+  }
+
+  const dossiers = loadDossiers();
+  const dossier = dossiers.find((d) => d.id === id);
+  if (!dossier) {
+    return res.status(404).json({ error: "Không tìm thấy hồ sơ" });
+  }
+
+  const safeCaseNo = dossier.caseNo.replace(/\//g, "-");
+  const caseDir = path.join(RECORDS_DIR, dossier.field, safeCaseNo);
+
+  if (!fs.existsSync(caseDir)) {
+    return res.status(404).json({ error: "Thư mục hồ sơ không tồn tại hoặc chưa sinh file" });
+  }
+
+  try {
+    const files = fs.readdirSync(caseDir);
+    if (files.length === 0) {
+      return res.status(404).json({ error: "Không tìm thấy file nào trong hồ sơ để nén" });
+    }
+
+    const zip = new PizZip();
+    let hasFiles = false;
+
+    for (const filename of files) {
+      const filePath = path.join(caseDir, filename);
+      const stat = fs.statSync(filePath);
+      if (stat.isFile()) {
+        const content = fs.readFileSync(filePath);
+        zip.file(filename, content);
+        hasFiles = true;
+      }
+    }
+
+    if (!hasFiles) {
+      return res.status(404).json({ error: "Không có file nào để nén" });
+    }
+
+    const zipBuffer = zip.generate({
+      type: "nodebuffer",
+      compression: "DEFLATE",
+    });
+
+    res.setHeader("Content-Type", "application/zip");
+    const safeZipName = `Bo_ho_so_${safeCaseNo}.zip`;
+    res.setHeader("Content-Disposition", `attachment; filename="${safeZipName}"`);
+    res.send(zipBuffer);
+  } catch (err: any) {
+    console.error("Error creating download zip:", err);
+    res.status(500).json({ error: "Không thể nén hồ sơ: " + err.message });
+  }
+});
+
 // API: Get generated files list for a case
 app.get("/api/dossiers/:id/files", (req, res) => {
   const { id } = req.params;
